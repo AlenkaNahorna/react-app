@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { addUser, getUserInfo } from 'api/fetchUser';
+import { addUser, getUserInfo, deleteUser } from 'api/fetchUser';
 
 export const fetchUserInfo = createAsyncThunk(
   'user/fetchUserInfo',
@@ -25,6 +25,21 @@ export const addTeammate = createAsyncThunk(
       return userApi;
     } catch (error) {
       toast.error('Oops, something went wrong!');
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteTeammate = createAsyncThunk(
+  'user/deleteTeammate',
+  async (id, { rejectWithValue }) => {
+    try {
+      await deleteUser(id);
+      const userApi = await getUserInfo();
+      toast.success('Contact deleted!');
+      return userApi;
+    } catch (error) {
+      toast.error('Contact not found!');
       return rejectWithValue(error);
     }
   }
@@ -62,6 +77,19 @@ export const userSlice = createSlice({
       return {
         ...state,
         userInfo: [...action.payload],
+      };
+    },
+
+    [deleteTeammate.pending]: (state, _) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+    [deleteTeammate.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        userInfo: action.payload,
       };
     },
   },

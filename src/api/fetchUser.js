@@ -14,3 +14,8 @@ export const addUser = async user => {
   const { data } = await customAxios.post('');
   return data;
 };
+
+export const deleteUser = async id => {
+  const { data } = await customAxios.delete(`/${id}`);
+  return data;
+};
