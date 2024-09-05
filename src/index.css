@@ -1,0 +1,5 @@
+body {
+  background-color: rgba(224, 233, 231, 0.795);
+  background: url(./assets/background-img-4.jpg) top center no-repeat;
+  background-size: cover;
+}
